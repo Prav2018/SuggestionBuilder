@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <title>Smart Search Bar</title>
+  </head>
+  <body>
+    <div class="container">
+    <form class="form">
+       <input class="form-control mr-sm-2" id="search_bar" name="suggestions" list="suggestions" aria-label="Search"><br>
+    </form>
+        <datalist id="suggestions"></datalist>
+</div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <script>
+      var dataList = document.getElementById('suggestions');
+      var inputSearch = document.getElementById('search_bar');
+$( "#search_bar" ).on( "keydown", function( event ) {
+  if(event.keyCode == 32){
+    var searchStr = inputSearch.value;
+    // if(searchStr.includes(".")){
+    //   searchStr = searchStr.split(".");
+    //   searchStr = searchStr[searchStr.length-1];
+    // }
+     $.get( "/search",{"text":searchStr}, function( data ) {
+            var json = JSON.parse(data);
+            $('#suggestions').empty();
+            $.each( json.data, function( key, value ) {
+              var option = document.createElement('option');
+                  option.value = value;
+                  dataList.appendChild(option);
+            });
+            
+        });
+  }
+});
+   </script>
+   <link rel="stylesheet" href="../static/css/styles.css">
+  </body>
+</html>
